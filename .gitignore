@@ -1,0 +1,9 @@
+# Vim swap files
+*.swp
+*.swo
+*.swn
+
+# Python cache directories
+__pycache__/
+# Python compiled objects (optional, but good practice if you have any .pyc files directly)
+*.pyc
