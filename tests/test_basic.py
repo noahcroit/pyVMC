@@ -39,19 +39,21 @@ class TestVMC(unittest.TestCase):
         self.assertNotEqual(port1, port2)
         self.assertNotEqual(baud1, baud2)
 
-    def test_basic(self):
-        print("Test basic")
-        issuer = vmc.core.VMC()
-        #issuer.uart_config('/dev/ttyUSB0', 9600, 8, 1, vmc.constants.PARITY_NONE)
-        #for i in range(5):
-        #    issuer.uart_sendpackage(b'hello VMC')
-        #    time.sleep(0.1)        
-         
-        self.assertIsNotNone(vmc) # Just to show vmc is imported
-        self.assertTrue(hasattr(vmc, 'core')) # Check if core module is accessible
-
-
-
+    def test_poll_status(self):
+        print("Test sending poll package")
+        vmc_test = vmc.core.VMC()
+        vmc_test.uart_reconfig(port="/dev/ttyUSB0",
+                                baudrate=9600,
+                                bytesize=8,
+                                stopbits=1,
+                                parity=vmc.constants.PARITY_NONE
+        )
+        ret = vmc_test.poll_status()
+        status = ret["status"]
+        inv = ret["inventory"]
+        print("returned poll status=", status, ", inventory=", inv)
+        self.assertNotEqual(status, vmc.constants.PACKAGE_ERROR)
+    
 if __name__ == '__main__':
     #print("test basic")
     unittest.main()
